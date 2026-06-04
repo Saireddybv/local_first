@@ -1,15 +1,16 @@
-# � Puppy — Wireless Clipboard Sync
+# 🐕 Puppy — Wireless Clipboard Sync & Screenshot Sharing
 
-Transfer text between your Windows PC and iPhone/Android **instantly** without cloud storage, apps, or complicated setup. Just copy on your PC, paste on your phone over WiFi.
+Transfer text between your Windows PC and iPhone/Android **instantly**, capture and share screenshots, all without cloud storage or complicated setup. Just copy on your PC, paste on your phone over WiFi.
 
 ## ✨ Features
 
 - **📋 Clipboard Sync** — Copy on Windows (Ctrl+C) → Paste on iPhone/Android
 - **⌨️ Live Typing Capture** — See everything you type on your PC appear on your phone in real-time
+- **📸 Screenshot Sharing** — Capture and display screen instantly on your phone
 - **🔒 Local WiFi Only** — No cloud, no data tracking, 100% private
 - **📱 Zero Apps Needed** — Works in any phone browser (Safari, Chrome)
 - **⚡ No Setup Hassle** — Just run `run.bat` and open a URL
-- **🎨 Split Panel UI** — Separate panels for clipboard and live typing
+- **🎨 Three-Panel UI** — Clipboard, Live Typing, and Screenshot panels
 
 ## 🚀 Quick Start (30 seconds)
 
@@ -36,7 +37,7 @@ Transfer text between your Windows PC and iPhone/Android **instantly** without c
 5. Paste normally (long-press → Paste)
 ```
 
-### Mode 2: Live Typing (Right Panel)
+### Mode 2: Live Typing (Middle Panel)
 ```
 1. Tap "Live ON" button on your phone
 2. Start typing ANYWHERE on your PC
@@ -46,20 +47,45 @@ Transfer text between your Windows PC and iPhone/Android **instantly** without c
 5. Tap "Clear" to reset
 ```
 
+### Mode 3: Screenshot Sharing (Right Panel)
+```
+1. Open http://192.168.X.X:5055 on your phone
+2. Tap "Capture" button
+3. PC screen is captured instantly
+4. Image appears on your phone
+5. Long-press the image to copy it
+6. Paste in messages, notes, or any app
+7. Tap "Clear" to remove the image
+```
+
+**Screenshot Features:**
+- Instant capture and display
+- Full screen resolution
+- Works on Windows and Mac
+- No text extraction needed
+- Perfect for sharing visuals
+
 ## 🛠️ Installation
 
-### Method 1: Automatic (Windows)
-```bash
+### Method 1: Automatic (Windows) ⭐
+Simply double-click:
+```
 run.bat
 ```
 
-### Method 2: Manual
+### Method 2: Manual Setup
 ```bash
-# Install dependencies
+# 1. Install dependencies
 python -m pip install -r requirements.txt
 
-# Start server
-python clip_server.py
+# 2. Start server
+python app.py
+```
+
+### Method 3: First-Time Setup (If Missing Dependencies)
+```bash
+# Windows: Run this in PowerShell as Administrator
+pip install flask flask-socketio pyperclip pynput pillow
 ```
 
 ### Find Your PC's IP Address
@@ -81,11 +107,14 @@ Look for **IPv4 Address** (e.g., `192.168.1.42`)
 | Question | Answer |
 |----------|--------|
 | **Will it work from Teams/Gmail/Chrome?** | Yes! Ctrl+C from anywhere works |
-| **Is it fast?** | Instant — no lag |
+| **Is it fast?** | Instant — Clipboard & typing <100ms, Screenshots <1 second |
 | **What about security?** | Local WiFi only, nothing stored, nothing sent to cloud |
 | **Can multiple people use it?** | Yes, same network, any number of phones |
 | **Does it work over internet?** | No, WiFi only (intentional for privacy) |
-| **Can I transfer files?** | Currently text only; file sharing coming soon |
+| **Can I transfer files?** | Currently text and images only |
+| **How many images can I capture?** | Unlimited — images stored in memory only, not on disk |
+| **What browsers are supported?** | Safari (iOS), Chrome, Firefox, Edge — all work great |
+| **Can I change the port?** | Yes, edit `config.py` → `FLASK_PORT` |
 
 ## 🐛 Troubleshooting
 
@@ -105,30 +134,61 @@ Look for **IPv4 Address** (e.g., `192.168.1.42`)
 - Make sure you clicked "Live ON" button
 - Try pressing keys in a text app (Notepad, browser)
 
+**"Screenshot not appearing"**
+- ✅ Refresh browser (F5 or Cmd+R)
+- ✅ Restart server (Ctrl+C then `python app.py`)
+- ✅ Check browser console for errors
+
+**"Long-press copy not working"**
+- Use Safari on iPhone (best compatibility)
+- Try Chrome or Firefox if Safari doesn't work
+- Hold finger on image for 1-2 seconds
+
+**"Screenshot button does nothing"**
+- Make sure WebSocket is connected (check browser console)
+- Try refreshing the page
+- Check if Pillow is installed: `pip list | findstr pillow`
+
 ## 🏗️ Project Structure
 
 ```
 puppy/
-├── clip_server.py          # Main Flask + WebSocket server
-├── requirements.txt        # Python dependencies
-├── run.bat                 # Windows quick-start launcher
-├── README.md              # This file
-└── .gitignore            # Git ignore rules
+├── app.py                      # Main Flask + WebSocket server
+├── config.py                   # Configuration & constants
+├── keyboard_handler.py         # Keyboard event handling
+├── screenshot_handler.py       # Screenshot capture & OCR
+├── ui.py                       # HTML/CSS/JS templates
+├── requirements.txt            # Python dependencies
+├── run.bat                     # Windows quick-start launcher
+├── README.md                   # This file
+└── .gitignore                  # Git ignore rules
 ```
+
+### File Responsibilities:
+- **app.py** — Flask routes, WebSocket events, server setup
+- **config.py** — All settings (ports, screenshot timeout)
+- **keyboard_handler.py** — Keyboard listener & keystroke capture
+- **screenshot_handler.py** — Screenshot capture and web interface management
+- **ui.py** — HTML template with 3-panel interface
+- **requirements.txt** — Python package dependencies
 
 ## 📦 Dependencies
 
-- **Flask** — Web server
+- **Flask** — Web server framework
 - **flask-socketio** — WebSocket for real-time updates
 - **pyperclip** — Read Windows clipboard
-- **pynput** — Capture keyboard input
+- **pynput** — Capture keyboard events
+- **Pillow** — Image processing (screenshots)
+- **python-socketio** & **python-engineio** — WebSocket transport layer
 
 ## 🎯 How It Works Under the Hood
 
 1. **Clipboard Sync**: `pyperclip` reads your Windows clipboard when you tap "Get from PC"
 2. **Live Typing**: `pynput.Listener` captures all keystrokes and sends via WebSocket
-3. **WebSocket**: Maintains real-time connection between PC and phone
-4. **Web UI**: React-free vanilla JavaScript for instant updates
+3. **Screenshots**: `PIL.ImageGrab` captures the full screen (built-in Python)
+4. **Real-time Updates**: WebSocket connection between PC and phone for instant updates
+5. **Web UI**: Vanilla JavaScript for responsive three-panel interface
+6. **Image Transmission**: Base64 encoding for cross-platform compatibility
 
 ## 🔮 Planned Features
 
