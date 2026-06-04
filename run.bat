@@ -16,6 +16,6 @@ echo.
 echo Both devices must be on the same WiFi!
 echo ========================================
 echo.
-python clip_server.py
+python app.py
 pause
 
