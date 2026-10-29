@@ -1,7 +1,0 @@
-flask==3.0.0
-pyperclip==1.8.2
-pynput==1.7.6
-flask-socketio==5.3.5
-python-socketio==5.10.0
-python-engineio==4.8.0
-pillow==10.1.0

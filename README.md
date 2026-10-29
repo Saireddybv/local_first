@@ -1,222 +1,113 @@
-# 🐕 Puppy — Wireless Clipboard Sync & Screenshot Sharing
+# Local First
 
-Transfer text between your Windows PC and iPhone/Android **instantly**, capture and share screenshots, all without cloud storage or complicated setup. Just copy on your PC, paste on your phone over WiFi.
+**Your Windows laptop and your phone, working together over your own Wi-Fi. No cloud, no account, no app to install.**
 
-## ✨ Features
+Open one local address on your phone and you can move files both ways, share text, or hear your laptop's audio through the phone. Optional tools turn the phone into a remote control for the laptop. Everything stays on your local network, and nothing needs internet access once it's installed.
 
-- **📋 Clipboard Sync** — Copy on Windows (Ctrl+C) → Paste on iPhone/Android
-- **⌨️ Live Typing Capture** — See everything you type on your PC appear on your phone in real-time
-- **📸 Screenshot Sharing** — Capture and display screen instantly on your phone
-- **🔒 Local WiFi Only** — No cloud, no data tracking, 100% private
-- **📱 Zero Apps Needed** — Works in any phone browser (Safari, Chrome)
-- **⚡ No Setup Hassle** — Just run `run.bat` and open a URL
-- **🎨 Three-Panel UI** — Clipboard, Live Typing, and Screenshot panels
+[![Tests](https://github.com/Saireddybv/local_first/actions/workflows/tests.yml/badge.svg)](https://github.com/Saireddybv/local_first/actions/workflows/tests.yml)
+![Platform](https://img.shields.io/badge/laptop-Windows%2010%20%7C%2011-blue)
+![Phone](https://img.shields.io/badge/phone-any%20modern%20browser-lightgrey)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-## 🚀 Quick Start (30 seconds)
+## What it does
 
-### Windows
-1. Install Python (if not already installed)
-2. Double-click **`run.bat`**
-3. You'll see: `Server running at http://192.168.X.X:5055`
+| Tool | What you can do |
+| --- | --- |
+| **Files** | Send photos and documents from phone to laptop and back. Works up to 10 GiB per file. |
+| **Clip** | Shared text pad between both screens, with buttons to read/write the Windows clipboard. |
+| **Audio** | Hear all of your laptop's sound on your phone. Handy when the laptop speakers are broken. |
+| **Notes** | Short notes saved on the laptop and visible from both devices. |
+| **Remote, slides and media** *(opt-in)* | Type, move the mouse, scroll, control music or advance presentation slides from your phone. |
+| **Screen** *(opt-in)* | Take a screenshot of the laptop or watch its screen from the phone. |
+| **Actions** *(opt-in)* | Run commands you've saved yourself on the laptop with one tap. |
+| **System** | Check laptop battery, CPU and memory from another room. |
+| **Camera / mic** *(opt-in, HTTPS)* | Use the phone's camera or microphone as a live feed on the laptop. |
 
-### iPhone/Android
-1. Make sure your phone is on **same WiFi** as your PC
-2. Open Safari (iPhone) or Chrome (Android)
-3. Go to: `http://192.168.X.X:5055` (replace with your PC's IP)
-4. Bookmark for quick access!
+*Opt-in* tools stay off until you switch them on **on the laptop**. **Stop sharing** turns them all off again.
 
-## 📖 How to Use
+## What you need
 
-### Mode 1: Clipboard Sync (Left Panel)
-```
-1. Copy anything on your PC (Ctrl+C)
-   → Email, Teams chat, code, URLs, anything works
-2. Tap "⬇️ Get from PC" on your phone
-3. Text appears instantly
-4. Tap "📲 Copy" to add to phone clipboard
-5. Paste normally (long-press → Paste)
-```
+- A Windows 10 or 11 laptop
+- [Python 3.11 or newer](https://www.python.org/downloads/windows/) (keep **"py launcher"** ticked in the installer)
+- A phone (iPhone or Android) on the **same Wi-Fi** as the laptop. Guest networks often block devices from seeing each other.
 
-### Mode 2: Live Typing (Middle Panel)
-```
-1. Tap "Live ON" button on your phone
-2. Start typing ANYWHERE on your PC
-   → Notepad, VS Code, Slack, email — it captures everything
-3. Your text appears live on the phone screen
-4. Tap "Copy" to copy what you typed
-5. Tap "Clear" to reset
-```
+## Quick start
 
-### Mode 3: Screenshot Sharing (Right Panel)
-```
-1. Open http://192.168.X.X:5055 on your phone
-2. Tap "Capture" button
-3. PC screen is captured instantly
-4. Image appears on your phone
-5. Long-press the image to copy it
-6. Paste in messages, notes, or any app
-7. Tap "Clear" to remove the image
-```
+1. **Download** this project: click the green **Code** button, choose **Download ZIP** and unzip it. Or run:
+   ```bash
+   git clone https://github.com/Saireddybv/local_first.git
+   ```
+2. **Double-click `Start Local First.bat`.** The first run installs everything it needs, which takes about a minute. Keep this window open while you use the app. If Windows Firewall asks, allow Python on **Private networks**.
+3. A page opens on the laptop with a **QR code**. Scan it with your phone camera and tap **Request pairing**.
+4. Check that the **six-digit code** matches on both screens, then click **Approve** on the laptop.
+5. Pick **Files**, **Clip** or **Audio** on your phone.
 
-**Screenshot Features:**
-- Instant capture and display
-- Full screen resolution
-- Works on Windows and Mac
-- No text extraction needed
-- Perfect for sharing visuals
+To stop, close the launcher window or press **Ctrl+C**. You'll need to pair again next time.
 
-## 🛠️ Installation
+## Everyday use
 
-### Method 1: Automatic (Windows) ⭐
-Simply double-click:
-```
-run.bat
+**Files** are saved in `D:\Local First Files` if you have a D: drive, otherwise in `~\Local First Files`. Approved devices can see every ordinary file in that folder. Downloading doesn't delete anything. If a file with the same name already exists, the upload is rejected rather than overwriting it.
+
+**Clip** shares only the text you type in its pad. The laptop's buttons explicitly read or write the Windows clipboard. Phone browsers may block clipboard access over HTTP, so on the phone you may need to select the text and use Copy/Paste from the menu. If both devices edit at once, you get a conflict warning and your unsaved draft is kept. Pad text lives in memory and isn't saved.
+
+**Audio** streams whatever Windows is playing. Tap **Start listening**, keep the browser in the foreground and don't mute Windows or the app that's playing.
+
+**Stop sharing** (on the laptop) signs out every phone, clears the pad, creates a fresh pairing QR, ends audio and camera, turns off all opt-in tools and stops tasks started through Local First. Saved files, notes and actions are kept.
+
+## Options
+
+Run these from a terminal in the project folder, or add them to `Start Local First.bat`:
+
+| Option | What it does |
+| --- | --- |
+| `--folder "D:\Shared"` | Shares a different folder |
+| `--port 8001` | Uses a different port if 8000 is busy |
+| `--address 192.168.1.20` | Sets the laptop IP for the QR code, if it picked the wrong network adapter |
+| `--cert ... --key ...` | Enables HTTPS, which the phone camera/mic needs. See [HTTPS setup](docs/https.md). |
+
+```powershell
+.venv\Scripts\python -m local_first --folder "D:\Shared" --port 8001
 ```
 
-### Method 2: Manual Setup
-```bash
-# 1. Install dependencies
-python -m pip install -r requirements.txt
+## Troubleshooting
 
-# 2. Start server
-python app.py
+| Problem | Fix |
+| --- | --- |
+| **Phone can't open the QR link** | In Windows Wi-Fi settings, set the network to **Private**. Allow Python through the firewall. Make sure both devices are on the same non-guest Wi-Fi. |
+| **QR code shows the wrong IP** | Start with `--address <your laptop's Wi-Fi IP>`. You can find it with `ipconfig`. |
+| **"Python was not found"** | Install Python from python.org with the **py launcher** option, then run the `.bat` again. |
+| **Port already in use** | Start with `--port 8001`. |
+| **Audio is silent** | Check that Windows isn't muted and that sound is playing through the default output device. |
+| **Audio stops when the phone locks** | Keep the browser in the foreground and turn off Auto-Lock while listening. |
+| **Camera/mic says it needs a secure page** | This is expected. Safari requires HTTPS for the camera. Follow [docs/https.md](docs/https.md). |
+| **Something broke during setup** | Delete the `.venv` folder and run `Setup.bat` again. |
+
+## Security in one paragraph
+
+Use Local First only on Wi-Fi you trust, and never forward its port to the internet. Every phone has to be approved on the laptop with a matching code. Sessions are random, kept in memory only and end when you press Stop sharing or close the app. Plain HTTP traffic isn't encrypted, so anyone already on your network could observe it. Opt-in tools such as remote control and screen viewing are powerful, so turn them on only for your own devices. Full details are in [SECURITY.md](SECURITY.md).
+
+## Development
+
+```powershell
+python -m venv .venv
+.venv\Scripts\python -m pip install -c requirements-lock.txt -e ".[dev,tls]"
+.venv\Scripts\python -m pytest
+node --test tests/motion-mouse.test.cjs
+.venv\Scripts\python -m local_first
 ```
 
-### Method 3: First-Time Setup (If Missing Dependencies)
-```bash
-# Windows: Run this in PowerShell as Administrator
-pip install flask flask-socketio pyperclip pynput pillow
-```
+| Path | Contents |
+| --- | --- |
+| `local_first/` | App: server, pairing, tools, audio capture and the browser UI in `static/` |
+| `tests/` | Pairing, permissions, transfers, notes, controls, tasks and signaling tests |
+| `docs/` | [Architecture](docs/architecture.md), [manual acceptance checks](docs/testing.md), [HTTPS](docs/https.md), [motion mouse](docs/motion-mouse.md) |
 
-### Find Your PC's IP Address
-Open PowerShell and run:
-```bash
-ipconfig
-```
-Look for **IPv4 Address** (e.g., `192.168.1.42`)
+Start with [CONTRIBUTING.md](CONTRIBUTING.md). Automated tests cover the server logic. Real iPhone playback and desktop control still need the manual checks in `docs/testing.md`.
 
-## 🔧 System Requirements
+## Background
 
-- **Windows 10/11** with Python 3.7+
-- **iPhone** (any iOS with Safari) or **Android** (any phone with browser)
-- Both devices on **same WiFi network**
-- Port 5055 available (can be changed in code)
+Local First grew out of separate single-purpose tools. The Audio tool is based on [Broken Speaker](https://github.com/Saireddybv/broken_speaker), which is still available on its own if audio is all you need. File transfer and Clip replace their earlier standalone servers. The old global keyboard capture from those prototypes was deliberately not carried over.
 
-## ❓ FAQ
+## License
 
-| Question | Answer |
-|----------|--------|
-| **Will it work from Teams/Gmail/Chrome?** | Yes! Ctrl+C from anywhere works |
-| **Is it fast?** | Instant — Clipboard & typing <100ms, Screenshots <1 second |
-| **What about security?** | Local WiFi only, nothing stored, nothing sent to cloud |
-| **Can multiple people use it?** | Yes, same network, any number of phones |
-| **Does it work over internet?** | No, WiFi only (intentional for privacy) |
-| **Can I transfer files?** | Currently text and images only |
-| **How many images can I capture?** | Unlimited — images stored in memory only, not on disk |
-| **What browsers are supported?** | Safari (iOS), Chrome, Firefox, Edge — all work great |
-| **Can I change the port?** | Yes, edit `config.py` → `FLASK_PORT` |
-
-## 🐛 Troubleshooting
-
-**"Cannot connect to server"**
-- ✅ Both devices on same WiFi?
-- ✅ Using correct IP? (Run `ipconfig` on PC)
-- ✅ Did you include `:5055` at the end?
-
-**"Windows Firewall is blocking"**
-- Allow `python.exe` through Windows Defender Firewall
-
-**"Server won't start"**
-- Make sure port 5055 is free (no other app using it)
-- Try: `netstat -ano | findstr :5055`
-
-**"Live typing not working"**
-- Make sure you clicked "Live ON" button
-- Try pressing keys in a text app (Notepad, browser)
-
-**"Screenshot not appearing"**
-- ✅ Refresh browser (F5 or Cmd+R)
-- ✅ Restart server (Ctrl+C then `python app.py`)
-- ✅ Check browser console for errors
-
-**"Long-press copy not working"**
-- Use Safari on iPhone (best compatibility)
-- Try Chrome or Firefox if Safari doesn't work
-- Hold finger on image for 1-2 seconds
-
-**"Screenshot button does nothing"**
-- Make sure WebSocket is connected (check browser console)
-- Try refreshing the page
-- Check if Pillow is installed: `pip list | findstr pillow`
-
-## 🏗️ Project Structure
-
-```
-puppy/
-├── app.py                      # Main Flask + WebSocket server
-├── config.py                   # Configuration & constants
-├── keyboard_handler.py         # Keyboard event handling
-├── screenshot_handler.py       # Screenshot capture & OCR
-├── ui.py                       # HTML/CSS/JS templates
-├── requirements.txt            # Python dependencies
-├── run.bat                     # Windows quick-start launcher
-├── README.md                   # This file
-└── .gitignore                  # Git ignore rules
-```
-
-### File Responsibilities:
-- **app.py** — Flask routes, WebSocket events, server setup
-- **config.py** — All settings (ports, screenshot timeout)
-- **keyboard_handler.py** — Keyboard listener & keystroke capture
-- **screenshot_handler.py** — Screenshot capture and web interface management
-- **ui.py** — HTML template with 3-panel interface
-- **requirements.txt** — Python package dependencies
-
-## 📦 Dependencies
-
-- **Flask** — Web server framework
-- **flask-socketio** — WebSocket for real-time updates
-- **pyperclip** — Read Windows clipboard
-- **pynput** — Capture keyboard events
-- **Pillow** — Image processing (screenshots)
-- **python-socketio** & **python-engineio** — WebSocket transport layer
-
-## 🎯 How It Works Under the Hood
-
-1. **Clipboard Sync**: `pyperclip` reads your Windows clipboard when you tap "Get from PC"
-2. **Live Typing**: `pynput.Listener` captures all keystrokes and sends via WebSocket
-3. **Screenshots**: `PIL.ImageGrab` captures the full screen (built-in Python)
-4. **Real-time Updates**: WebSocket connection between PC and phone for instant updates
-5. **Web UI**: Vanilla JavaScript for responsive three-panel interface
-6. **Image Transmission**: Base64 encoding for cross-platform compatibility
-
-## 🔮 Planned Features
-
-- [ ] Clipboard history (last 20 items)
-- [ ] Auto-sync mode (sync every 5 seconds)
-- [ ] Dark mode
-- [ ] File transfer
-- [ ] Voice input
-- [ ] Sync between multiple phones
-
-## 🤝 Contributing
-
-Found a bug? Have an idea? **Pull requests welcome!**
-
-1. Fork the repo
-2. Create a branch: `git checkout -b feature/your-feature`
-3. Commit: `git commit -am 'Add feature'`
-4. Push: `git push origin feature/your-feature`
-5. Open a Pull Request
-
-## 📄 License
-
-MIT License — Use, modify, and share freely!
-
-## 🙋 Support
-
-**Having issues?** Check the [Troubleshooting](#-troubleshooting) section or open an issue.
-
----
-
-**Made with ❤️ for seamless PC-to-Phone text transfer**
+[MIT](LICENSE)

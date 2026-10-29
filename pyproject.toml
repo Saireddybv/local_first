@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local-first-tools"
+version = "0.2.0"
+description = "Share files, clipboard text and laptop audio between Windows and your phone over local Wi-Fi"
+license = {text = "MIT"}
+authors = [{name = "Venkatasai Reddy Barri"}]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "websockets>=13,<17", "qrcode>=8,<9", "Pillow>=11,<13", "psutil>=6,<8", "pyperclip>=1.9,<2", "PyAudioWPatch==0.2.12.8; sys_platform == 'win32'"]
+
+[project.urls]
+Homepage = "https://github.com/Saireddybv/local_first"
+Issues = "https://github.com/Saireddybv/local_first/issues"
+
+[project.optional-dependencies]
+tls = ["cryptography>=44,<49"]
+dev = ["pytest>=8,<9", "httpx>=0.27,<1"]
+
+[project.scripts]
+local-first = "local_first.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["local_first*"]
+
+[tool.setuptools.package-data]
+local_first = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
